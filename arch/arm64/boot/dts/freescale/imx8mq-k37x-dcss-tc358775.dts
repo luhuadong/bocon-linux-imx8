@@ -1,0 +1,159 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * Copyright 2020 BOCON Ltd.
+ */
+
+#include "imx8mq-k37x.dts"
+
+/delete-node/&hdmi;
+
+&irqsteer {
+	status = "okay";
+};
+
+&lcdif {
+	status = "disabled";
+};
+
+&dcss {
+	status = "okay";
+
+	clocks = <&clk IMX8MQ_CLK_DISP_APB_ROOT>,
+		 <&clk IMX8MQ_CLK_DISP_AXI_ROOT>,
+		 <&clk IMX8MQ_CLK_DISP_RTRM_ROOT>,
+		 <&clk IMX8MQ_CLK_DC_PIXEL>,
+		 <&clk IMX8MQ_CLK_DISP_DTRC>;
+	clock-names = "apb", "axi", "rtrm", "pix", "dtrc";
+	assigned-clocks = <&clk IMX8MQ_CLK_DC_PIXEL>,
+					  <&clk IMX8MQ_VIDEO_PLL1_BYPASS>,
+					  <&clk IMX8MQ_VIDEO_PLL1_REF_SEL>,
+					  <&clk IMX8MQ_CLK_DISP_AXI>,
+					  <&clk IMX8MQ_CLK_DISP_RTRM>;
+	assigned-clock-parents = <&clk IMX8MQ_VIDEO_PLL1_OUT>,
+							 <&clk IMX8MQ_VIDEO_PLL1>,
+							 <&clk IMX8MQ_CLK_27M>,
+							 <&clk IMX8MQ_SYS1_PLL_800M>,
+							 <&clk IMX8MQ_SYS1_PLL_800M>;
+	assigned-clock-rates = <600000000>, <0>, <0>,
+						   <800000000>,
+						   <400000000>;
+
+	port@0 {
+		dcss_out: endpoint {
+			remote-endpoint = <&mipi_dsi_in>;
+		};
+	};
+};
+
+&pwm1 {                                                                         
+        status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pwm1>;			
+};
+
+
+&mipi_dsi {
+	status = "okay";
+	fsl,clock-drop-level = <2>;
+
+	panel@0 {
+		compatible = "tc,tc358775";
+		reg = <0>;
+		pinctrl-0 = <&pinctrl_mipi_dsi_en>;
+		pinctrl-names = "default";
+		reset-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+		blk-gpios = <&gpio3 3 GPIO_ACTIVE_HIGH>;
+		pwr-gpios = <&gpio3 4 GPIO_ACTIVE_HIGH>;
+		stby-gpios = <&gpio4 22 GPIO_ACTIVE_HIGH>;
+		dsi-lanes = <4>;
+		video-mode = <2>;//1=sync even  2=sync pulse
+		width-mm = <68>;
+		height-mm = <121>;
+		pwms = <&pwm1 0 12000>;
+
+		clock = <160000>;
+		/* 160M  SYNC PULSE 模式 */
+		reg_init = < 
+				0x013c	0x000A000C 
+				0x0114	0x00000008
+				0x0164	0x0000000D
+				0x0168	0x0000000D
+				0x016c	0x0000000D 
+				0x0170	0x0000000D
+				0x0134	0x0000001f
+				0x0210	0x0000001f
+				0x0104  0x00000001 
+				0x0204	0x00000001 
+				0x0450	0x03F00100
+				0x0454	0x003C0050
+				0x0458	0x00140780
+				0x045C	0x00140032
+				0x0460	0x00140438 
+				0x0464	0x00000001
+				0x04A0	0x00448006	/*reset LVDS PHY */
+				0xffff	0x000001f4   /*delay 500us*/
+				0x04A0	0x00048006 
+				0x0504	0x00000004 
+				0x0480	0x03020100
+				0x0484	0x08050704
+				0x0488	0x0F0E0A09 
+				0x048C	0x100D0C0B
+				0x0490	0x12111716
+				0x0494	0x1B151413 
+				0x0498	0x061A1918 
+				0x049c	0x00000063
+		>;	
+
+
+		port {
+			panel_in: endpoint {
+				remote-endpoint = <&mipi_dsi_out>;
+			};
+		};
+	};
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			mipi_dsi_in: endpoint {
+				remote-endpoint = <&dcss_out>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+			mipi_dsi_out: endpoint {
+				remote-endpoint = <&panel_in>;
+			};
+		};
+	};
+};
+
+&dphy {
+	status = "okay";
+};
+
+&iomuxc {
+	pinctrl_mipi_dsi_en: mipi_dsi_en {
+		fsl,pins = <
+			MX8MQ_IOMUXC_ECSPI1_SCLK_GPIO5_IO6	0x16
+			MX8MQ_IOMUXC_GPIO1_IO00_GPIO1_IO0	0x16  /*reset*/
+			MX8MQ_IOMUXC_NAND_CE2_B_GPIO3_IO3	0x16  /*blk en*/
+			MX8MQ_IOMUXC_NAND_CE3_B_GPIO3_IO4	0x16 /*power en */
+			MX8MQ_IOMUXC_SAI2_RXC_GPIO4_IO22	0x16 /*STBY*/
+		>;
+	};
+
+	pinctrl_pwm1: pwm1grp {
+		fsl,pins = <
+			MX8MQ_IOMUXC_GPIO1_IO01_PWM1_OUT        0x1f   /*pwm*/
+		>;
+	};		
+};
+
+&synaptics_dsx_ts {
+	status = "okay";
+};
