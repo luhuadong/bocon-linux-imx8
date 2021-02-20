@@ -139,7 +139,7 @@
 &iomuxc {
 	pinctrl_mipi_dsi_en: mipi_dsi_en {
 		fsl,pins = <
-			MX8MQ_IOMUXC_ECSPI1_SCLK_GPIO5_IO6	0x16
+			/* MX8MQ_IOMUXC_ECSPI1_SCLK_GPIO5_IO6	0x16 */
 			MX8MQ_IOMUXC_GPIO1_IO00_GPIO1_IO0	0x16  /*reset*/
 			MX8MQ_IOMUXC_NAND_CE2_B_GPIO3_IO3	0x16  /*blk en*/
 			MX8MQ_IOMUXC_NAND_CE3_B_GPIO3_IO4	0x16 /*power en */

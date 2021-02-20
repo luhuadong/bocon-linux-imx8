@@ -597,10 +597,10 @@
 	synaptics_dsx_ts: synaptics_dsx_ts@20 {
 		compatible = "synaptics_dsx";
 		reg = <0x20>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_i2c1_dsi_ts_int>;
-		interrupt-parent = <&gpio5>;
-		interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
+		//pinctrl-names = "default";
+		//pinctrl-0 = <&pinctrl_i2c1_dsi_ts_int>;
+		//interrupt-parent = <&gpio5>;
+		//interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
 		synaptics,diagonal-rotation;
 		status = "disabled";
 	};
@@ -633,9 +633,9 @@
 		reg = <0x3d>;
 		adi,addr-cec = <0x3b>;
 		adi,dsi-lanes = <4>;
-		pinctrl-0 = <&pinctrl_i2c1_dsi_ts_int>;
-		interrupt-parent = <&gpio5>;
-		interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
+		//pinctrl-0 = <&pinctrl_i2c1_dsi_ts_int>;
+		//interrupt-parent = <&gpio5>;
+		//interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
 
 		status = "disabled";
 	};
@@ -944,13 +944,13 @@
 			MX8MQ_IOMUXC_I2C3_SDA_I2C3_SDA			0x4000007f
 		>;
 	};
-
+/*
 	pinctrl_i2c1_dsi_ts_int: dsi_ts_int {
 		fsl,pins = <
 			MX8MQ_IOMUXC_ECSPI1_MOSI_GPIO5_IO7		0x19
 		>;
 	};
-
+*/
 	pinctrl_i2c2: i2c2grp {
 		fsl,pins = <
 			MX8MQ_IOMUXC_I2C2_SCL_I2C2_SCL			0x40000067
@@ -1104,8 +1104,8 @@
 		fsl,pins = <
 			MX8MQ_IOMUXC_UART3_TXD_UART3_DCE_TX		0x49
 			MX8MQ_IOMUXC_UART3_RXD_UART3_DCE_RX		0x49
-			MX8MQ_IOMUXC_ECSPI1_MISO_UART3_DCE_CTS_B	0x49
-			MX8MQ_IOMUXC_ECSPI1_SS0_UART3_DCE_RTS_B		0x49
+			/* MX8MQ_IOMUXC_ECSPI1_MISO_UART3_DCE_CTS_B	0x49
+			MX8MQ_IOMUXC_ECSPI1_SS0_UART3_DCE_RTS_B		0x49 */
 			MX8MQ_IOMUXC_NAND_CLE_GPIO3_IO5			0x19
 		>;
 	};
@@ -1215,6 +1215,15 @@
 			MX8MQ_IOMUXC_SAI3_RXC_GPIO4_IO29		0x19
 		>;
 	};
+
+	pinctrl_ecspi1: ecspi1grp {
+		fsl,pins = <
+			MX8MQ_IOMUXC_ECSPI1_SCLK_ECSPI1_SCLK    	0x82
+			MX8MQ_IOMUXC_ECSPI1_MOSI_ECSPI1_MOSI    	0x82
+			MX8MQ_IOMUXC_ECSPI1_MISO_ECSPI1_MISO    	0x82
+			MX8MQ_IOMUXC_ECSPI1_SS0_ECSPI1_SS0      	0x82
+			>;
+	};
 };
 
 &vpu {
@@ -1265,4 +1274,17 @@
 
 &snvs_rtc{
 	status = "disabled"; /*disable imx raw rtc*/
+};
+
+&ecspi1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_ecspi1>;
+	status = "okay";
+
+	spi1_cs0@0 {
+		status = "okay";
+		compatible = "spi1-cs0";
+		spi-max-frequency = <10000000>;
+		reg=<0x00>;
+	};
 };
