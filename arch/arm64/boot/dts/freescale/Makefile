@@ -31,6 +31,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mq-zii-ultra-zest.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-ddr3l-val.dtb imx8mq-ddr4-val.dtb imx8mq-ddr4-val-gpmi-nand.dtb
 
 
+dtb-$(CONFIG_ARCH_MXC) += imx8mq-ind.dtb 
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-k37x.dtb 
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-k37x-dcss-tc358775.dtb imx8mq-k37x-dcss-sn65dsi86.dtb
 dtb-$(CONFIG_ARCH_MXC) += imx8mq-k37x-lcdif-sn65dsi86.dtb imx8mq-k37x-lcdif-tc358775.dtb
