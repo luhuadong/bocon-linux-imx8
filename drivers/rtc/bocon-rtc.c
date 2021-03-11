@@ -24,7 +24,7 @@
 #define MEM_CLEAR                0x1
 
 /* If you need alloc major number dynamically, please set BOCON_RTC_MAJOR to 0 */
-#define BOCON_RTC_MAJOR          230
+#define BOCON_RTC_MAJOR          CONFIG_RTC_BOCON_DEV_MAJOR_NUMBER
 
 static int bocon_rtc_major = BOCON_RTC_MAJOR;
 module_param(bocon_rtc_major, int, S_IRUGO);

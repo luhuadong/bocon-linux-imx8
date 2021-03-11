@@ -156,6 +156,13 @@ config RTC_BOCON_DEV_REAL_NAME
 	depends on RTC_BOCON_DEV
 	default "rtc0"
 
+config RTC_BOCON_DEV_MAJOR_NUMBER
+	int "Custom RTC device major number"
+	depends on RTC_BOCON_DEV
+	default 230
+	help
+	  If you need alloc major number dynamically, please set to 0
+
 config RTC_DRV_TEST
 	tristate "Test driver/device"
 	help
