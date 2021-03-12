@@ -1499,6 +1499,15 @@ config GPIO_VIPERBOARD
 
 endmenu
 
+menu "Bocon GPIO Device Driver"
+
+config GPIO_BOCON_UART_POWER_EN
+	tristate "Bocon uart power pin"
+	help
+	  This option enables support for UART_PWR_EN
+
+endmenu
+
 config GPIO_MOCKUP
 	tristate "GPIO Testing Driver"
 	select IRQ_SIM
@@ -1511,3 +1520,4 @@ config GPIO_MOCKUP
 	  it.
 
 endif
+

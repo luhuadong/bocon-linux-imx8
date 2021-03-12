@@ -170,3 +170,6 @@ obj-$(CONFIG_GPIO_XTENSA)		+= gpio-xtensa.o
 obj-$(CONFIG_GPIO_ZEVIO)		+= gpio-zevio.o
 obj-$(CONFIG_GPIO_ZX)			+= gpio-zx.o
 obj-$(CONFIG_GPIO_ZYNQ)			+= gpio-zynq.o
+
+# Bocon GPIO Device Driver
+obj-$(CONFIG_GPIO_BOCON_UART_POWER_EN)	+= uart_power.o
