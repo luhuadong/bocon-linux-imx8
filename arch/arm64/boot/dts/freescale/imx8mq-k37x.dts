@@ -759,7 +759,7 @@
 		 <&pcie1_refclk>;
 	clock-names = "pcie", "pcie_aux", "pcie_phy", "pcie_bus";
 	reserved-region = <&rpmsg_reserved>;
-	status = "okay";
+	status = "disabled";
 };
 
 &pcie1_ep {
@@ -1254,6 +1254,15 @@
 			>;
 	};
 
+	pinctrl_ecspi2: ecspi2grp {
+		fsl,pins = <
+			MX8MQ_IOMUXC_ECSPI2_SCLK_ECSPI2_SCLK    	0x82
+			MX8MQ_IOMUXC_ECSPI2_MOSI_ECSPI2_MOSI    	0x82
+			MX8MQ_IOMUXC_ECSPI2_MISO_ECSPI2_MISO    	0x82
+			MX8MQ_IOMUXC_ECSPI2_SS0_ECSPI2_SS0      	0x82
+			>;
+	};
+
 	pinctrl_beep: beepgrp {
 		fsl,pins = <
 			MX8MQ_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x82
@@ -1328,9 +1337,25 @@
 	pinctrl-0 = <&pinctrl_ecspi1>;
 	status = "okay";
 
-	spi1_cs0@0 {
+	spidev0: spi1_cs0@0 {
 		status = "okay";
-		compatible = "spi1-cs0";
+		//compatible = "spi1-cs0";
+		compatible = "bocon,k37xspi";
+		spi-max-frequency = <50000000>;
+		reg=<0x00>;
+	};
+};
+
+&ecspi2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_ecspi2>;
+	status = "okay";
+	cs-gpios = <&gpio5 13 GPIO_ACTIVE_HIGH>;
+
+	spidev1: spi2_cs0@0 {
+		status = "okay";
+		//compatible = "linux,spi2", "spi2-cs0";
+		compatible = "bocon,k37xspi";
 		spi-max-frequency = <50000000>;
 		reg=<0x00>;
 	};
