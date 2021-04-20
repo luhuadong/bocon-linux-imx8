@@ -325,7 +325,7 @@
 &mipi_csi_1 {
 	#address-cells = <1>;
 	#size-cells = <0>;
-	status = "okay";
+	status = "disabled";
 	port {
 		mipi1_sensor_ep: endpoint@0 {
 			remote-endpoint = <&ov5640_mipi1_ep>;
@@ -342,7 +342,7 @@
 &mipi_csi_2 {
 	#address-cells = <1>;
 	#size-cells = <0>;
-	status = "okay";
+	status = "disabled";
 	port {
 		mipi2_sensor_ep: endpoint@0 {
 			remote-endpoint = <&ov5640_mipi2_ep>;
@@ -468,7 +468,7 @@
 	ov5640_mipi2: ov5640_mipi2@3c {
 		compatible = "ovti,ov5640_mipi";
 		reg = <0x3c>;
-		status = "okay";
+		status = "disabled";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_csi2_pwn>, <&pinctrl_csi_rst>;
 		clocks = <&clk IMX8MQ_CLK_CLKO2>;
@@ -635,17 +635,20 @@
 	ak4458_1: ak4458@10 {
 		compatible = "asahi-kasei,ak4458";
 		reg = <0x10>;
+		status = "disabled";
 	};
 
 	ak4458_2: ak4458@12 {
 		compatible = "asahi-kasei,ak4458";
 		reg = <0x12>;
+		status = "disabled";
 	};
 
 	ak5558: ak5558@13 {
 		compatible = "asahi-kasei,ak5558";
 		reg = <0x13>;
 		ak5558,pdn-gpio = <&gpio3 17 GPIO_ACTIVE_HIGH>;
+		status = "disabled";
 	};
 
 	ak4497: ak4497@11 {
@@ -677,7 +680,7 @@
 	ov5640_mipi: ov5640_mipi@3c {
 		compatible = "ovti,ov5640_mipi";
 		reg = <0x3c>;
-		status = "okay";
+		status = "disabled";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_csi1_pwn>;
 		clocks = <&clk IMX8MQ_CLK_CLKO2>;
@@ -696,7 +699,6 @@
 		};
 	};
 
-	        
 	touchscreen@41 {
 		compatible = "ilitek,ili251x";
 		reg = <0x41>;
