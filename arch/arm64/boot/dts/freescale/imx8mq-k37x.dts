@@ -910,12 +910,12 @@
 	};
 	pinctrl_csi2_pwn: csi2_pwn_grp {
 		fsl,pins = <
-			MX8MQ_IOMUXC_GPIO1_IO05_GPIO1_IO5		0x19
+			/* MX8MQ_IOMUXC_GPIO1_IO05_GPIO1_IO5		0x19 */
 		>;
 	};
 
 
-	pinctrl_ili2511: ili2511_grp{                                                              
+	pinctrl_ili2511: ili2511_grp {                                                              
 		fsl,pins = <
 			MX8MQ_IOMUXC_SAI1_TXFS_GPIO4_IO10               0x82
 			MX8MQ_IOMUXC_SAI1_TXC_GPIO4_IO11                0x82
@@ -988,8 +988,8 @@
 	pinctrl_pcie1: pcie1grp {
 		fsl,pins = <
 			MX8MQ_IOMUXC_I2C4_SDA_PCIE2_CLKREQ_B		0x76 /* open drain, pull up */
-			MX8MQ_IOMUXC_ECSPI2_SCLK_GPIO5_IO10		0x16
-			MX8MQ_IOMUXC_ECSPI2_MISO_GPIO5_IO12		0x16
+			/* MX8MQ_IOMUXC_ECSPI2_SCLK_GPIO5_IO10		0x16
+			MX8MQ_IOMUXC_ECSPI2_MISO_GPIO5_IO12		0x16 */
 		>;
 	};
 
@@ -1000,7 +1000,7 @@
 			MX8MQ_IOMUXC_NAND_DATA00_QSPI_A_DATA0	0x82
 			MX8MQ_IOMUXC_NAND_DATA01_QSPI_A_DATA1	0x82
 			MX8MQ_IOMUXC_NAND_DATA02_QSPI_A_DATA2	0x82
-			MX8MQ_IOMUXC_NAND_DATA03_QSPI_A_DATA3	0x82
+			/* MX8MQ_IOMUXC_NAND_DATA03_QSPI_A_DATA3	0x82 */
 
 		>;
 	};
@@ -1256,10 +1256,13 @@
 
 	pinctrl_ecspi2: ecspi2grp {
 		fsl,pins = <
-			MX8MQ_IOMUXC_ECSPI2_SCLK_ECSPI2_SCLK    	0x82
-			MX8MQ_IOMUXC_ECSPI2_MOSI_ECSPI2_MOSI    	0x82
-			MX8MQ_IOMUXC_ECSPI2_MISO_ECSPI2_MISO    	0x82
-			MX8MQ_IOMUXC_ECSPI2_SS0_ECSPI2_SS0      	0x82
+			MX8MQ_IOMUXC_ECSPI2_SCLK_ECSPI2_SCLK    	0x9f
+			MX8MQ_IOMUXC_ECSPI2_MOSI_ECSPI2_MOSI   		0x9f
+			MX8MQ_IOMUXC_ECSPI2_MISO_ECSPI2_MISO    	0x9f
+			MX8MQ_IOMUXC_ECSPI2_SS0_GPIO5_IO13      	0x82 
+			MX8MQ_IOMUXC_GPIO1_IO05_GPIO1_IO5       	0x82 
+			MX8MQ_IOMUXC_NAND_DATA03_GPIO3_IO9      	0x82
+			MX8MQ_IOMUXC_NAND_DATA04_GPIO3_IO10     	0x82 
 			>;
 	};
 
@@ -1341,7 +1344,7 @@
 		status = "okay";
 		//compatible = "spi1-cs0";
 		compatible = "bocon,k37xspi";
-		spi-max-frequency = <50000000>;
+		spi-max-frequency = <10000000>;
 		reg=<0x00>;
 	};
 };
@@ -1350,14 +1353,23 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi2>;
 	status = "okay";
-	cs-gpios = <&gpio5 13 GPIO_ACTIVE_HIGH>;
+	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>, <&gpio1 5 GPIO_ACTIVE_LOW>;
+	num-cs = <2>;
 
-	spidev1: spi2_cs0@0 {
+	wk2xxx_spi@0 {
 		status = "okay";
-		//compatible = "linux,spi2", "spi2-cs0";
-		compatible = "bocon,k37xspi";
-		spi-max-frequency = <50000000>;
-		reg=<0x00>;
+		compatible = "spi-wk2124";
+		spi-max-frequency = <5000000>;
+		reg = <0x00>;
+		irq = <&gpio3 9 GPIO_ACTIVE_HIGH>;
+	};
+	
+	wk2xxx_spi@1 {
+		status = "okay";
+		compatible = "spi-wk2124";
+		spi-max-frequency = <5000000>;
+		reg = <0x01>;
+		irq = <&gpio3 10 GPIO_ACTIVE_HIGH>;
 	};
 };
 

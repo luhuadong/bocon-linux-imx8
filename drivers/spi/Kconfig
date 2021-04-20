@@ -944,4 +944,10 @@ config SPI_SLAVE_SYSTEM_CONTROL
 
 endif # SPI_SLAVE
 
+config SPI_WK2124
+	tristate "SPI to Uart WK2124 driver"
+	default y
+	help
+	  Enable SPI to Uart driver for Bocon K37X extension.
+
 endif # SPI
